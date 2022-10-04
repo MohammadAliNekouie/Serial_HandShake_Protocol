@@ -65,10 +65,11 @@ class device:
         device.responce_frame[8]=randint(0,255)
 
     def protocol(self,received):
-        logs(self.number,received,0)
+	self.rec = received
+        logs(self.number,self.rec,0)
         self.update()
-        logs(self.number,received,1)
-        if received == None:
+        logs(self.number,self.rec,1)
+        if self.rec == None:
             device.startframecounter +=1
             if device.startframecounter > 10:
                 device.startframecounter = 1
@@ -87,13 +88,13 @@ class device:
                 time.sleep(delay)
         else:
 	    #get id of received data
-            device.temp_idn = received[0]
+            device.temp_idn = self.rec[0]
 	    #is not a zero frame
             if device.temp_idn != 0:
                 device.temp_idn -=1
-                received[0]=device.temp_idn
-                logs(self.number,received,2)
-                prints(self.number,"Device "+str(self.number)+" Forward frame "+str(received))
+                self.rec[0]=device.temp_idn
+                logs(self.number,self.rec,2)
+                prints(self.number,"Device "+str(self.number)+" Forward frame "+str(self.rec))
                 time.sleep(delay)
                 return received
             else:
